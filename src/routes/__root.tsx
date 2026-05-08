@@ -75,11 +75,15 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { title: "TripSync AI — Plan trips together" },
       { name: "description", content: "Real-time collaborative group travel planner. Join with a nickname, vote, and let AI build a fair itinerary." },
-      { property: "og:title", content: "TripSync AI" },
-      { property: "og:description", content: "Plan trips together. No chaos. Just good vibes." },
+      { property: "og:title", content: "TripSync AI — Plan trips together" },
+      { property: "og:description", content: "Real-time collaborative group travel planner. Join with a nickname, vote, and let AI build a fair itinerary." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
       { name: "twitter:site", content: "@Lovable" },
+      { name: "twitter:title", content: "TripSync AI — Plan trips together" },
+      { name: "twitter:description", content: "Real-time collaborative group travel planner. Join with a nickname, vote, and let AI build a fair itinerary." },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/6ac1e581-7fb5-463e-a991-f5d740a488df/id-preview-86d772b1--405c8924-50ea-41fb-bc6d-236857f96fdd.lovable.app-1778268904560.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/6ac1e581-7fb5-463e-a991-f5d740a488df/id-preview-86d772b1--405c8924-50ea-41fb-bc6d-236857f96fdd.lovable.app-1778268904560.png" },
     ],
     links: [
       {

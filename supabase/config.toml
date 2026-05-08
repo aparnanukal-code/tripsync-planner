@@ -1,1 +1,6 @@
 project_id = "jprsdeqfhhlnekbahtgz"
+[functions.generate-destination-suggestions]
+verify_jwt = false
+
+[functions.generate-itinerary]
+verify_jwt = false

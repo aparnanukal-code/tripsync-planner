@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as CreateRouteImport } from './routes/create'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as TripTripIdRouteImport } from './routes/trip.$tripId'
 import { Route as JoinTripIdRouteImport } from './routes/join.$tripId'
 
 const CreateRoute = CreateRouteImport.update({
@@ -23,6 +24,11 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const TripTripIdRoute = TripTripIdRouteImport.update({
+  id: '/trip/$tripId',
+  path: '/trip/$tripId',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const JoinTripIdRoute = JoinTripIdRouteImport.update({
   id: '/join/$tripId',
   path: '/join/$tripId',
@@ -33,30 +39,34 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/create': typeof CreateRoute
   '/join/$tripId': typeof JoinTripIdRoute
+  '/trip/$tripId': typeof TripTripIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/create': typeof CreateRoute
   '/join/$tripId': typeof JoinTripIdRoute
+  '/trip/$tripId': typeof TripTripIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/create': typeof CreateRoute
   '/join/$tripId': typeof JoinTripIdRoute
+  '/trip/$tripId': typeof TripTripIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/create' | '/join/$tripId'
+  fullPaths: '/' | '/create' | '/join/$tripId' | '/trip/$tripId'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/create' | '/join/$tripId'
-  id: '__root__' | '/' | '/create' | '/join/$tripId'
+  to: '/' | '/create' | '/join/$tripId' | '/trip/$tripId'
+  id: '__root__' | '/' | '/create' | '/join/$tripId' | '/trip/$tripId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   CreateRoute: typeof CreateRoute
   JoinTripIdRoute: typeof JoinTripIdRoute
+  TripTripIdRoute: typeof TripTripIdRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -75,6 +85,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/trip/$tripId': {
+      id: '/trip/$tripId'
+      path: '/trip/$tripId'
+      fullPath: '/trip/$tripId'
+      preLoaderRoute: typeof TripTripIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/join/$tripId': {
       id: '/join/$tripId'
       path: '/join/$tripId'
@@ -89,6 +106,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   CreateRoute: CreateRoute,
   JoinTripIdRoute: JoinTripIdRoute,
+  TripTripIdRoute: TripTripIdRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

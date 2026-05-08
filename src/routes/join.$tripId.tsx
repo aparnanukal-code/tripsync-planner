@@ -24,6 +24,12 @@ function JoinPage() {
 
   useEffect(() => {
     (async () => {
+      const { data: sess } = await supabase.auth.getSession();
+      if (!sess.session) {
+        await supabase.auth.signInAnonymously({
+          options: { data: { display_name: "Traveler", is_anonymous: true } },
+        });
+      }
       const { data: t } = await supabase.from("trips").select("*").eq("id", tripId).maybeSingle();
       setTrip(t);
       const { count: c } = await supabase.from("members").select("*", { count: "exact", head: true }).eq("trip_id", tripId);

@@ -5,7 +5,7 @@ import { SiteHeader } from "@/components/tripsync/Header";
 import { CityAutocomplete } from "@/components/tripsync/CityAutocomplete";
 import { VIBES, BUDGETS } from "@/lib/tripsync/constants";
 import type { CityResult } from "@/lib/tripsync/photon";
-import { Sparkles, Loader2 } from "lucide-react";
+import { Sparkles, Loader as Loader2 } from "lucide-react";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/create")({
@@ -97,16 +97,16 @@ function CreatePage() {
       <div className="min-h-screen bg-background">
         <SiteHeader right={<span className="text-sm text-muted-foreground">Organizer sign-in</span>} />
         <main className="mx-auto max-w-md px-6 py-16">
-          <div className="rounded-2xl border border-border bg-card p-8 shadow-sm">
+          <div className="rounded-2xl border border-border bg-white p-8 shadow-md">
             <h1 className="text-2xl font-bold tracking-tight">{authMode === "signup" ? "Create your account" : "Welcome back"}</h1>
             <p className="mt-1 text-sm text-muted-foreground">Organizers sign in once to manage their trips. Guests join with a nickname only.</p>
             <form onSubmit={handleAuth} className="mt-6 space-y-3">
               {authMode === "signup" && (
-                <input className="w-full rounded-lg border border-border bg-card px-3 py-2 text-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/15" placeholder="Your name" value={name} onChange={(e) => setName(e.target.value)} />
+                <input className="input-field w-full px-3 py-2 text-sm" placeholder="Your name" value={name} onChange={(e) => setName(e.target.value)} />
               )}
-              <input type="email" required className="w-full rounded-lg border border-border bg-card px-3 py-2 text-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/15" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
-              <input type="password" required minLength={6} className="w-full rounded-lg border border-border bg-card px-3 py-2 text-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/15" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
-              <button disabled={authBusy} className="flex w-full items-center justify-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground shadow-sm hover:bg-primary-hover disabled:opacity-50">
+              <input type="email" required className="input-field w-full px-3 py-2 text-sm" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
+              <input type="password" required minLength={6} className="input-field w-full px-3 py-2 text-sm" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
+              <button disabled={authBusy} className="btn-primary flex w-full items-center justify-center gap-2 px-4 py-2.5 text-sm">
                 {authBusy && <Loader2 className="h-4 w-4 animate-spin" />}
                 {authMode === "signup" ? "Create account" : "Sign in"}
               </button>
@@ -129,9 +129,9 @@ function CreatePage() {
         <h1 className="text-3xl font-bold tracking-tight">Create your trip</h1>
         <p className="mt-1 text-sm text-muted-foreground">We'll pre-load AI activity suggestions and give you a link to share.</p>
 
-        <form onSubmit={submit} className="mt-8 space-y-6 rounded-2xl border border-border bg-card p-6 shadow-sm">
+        <form onSubmit={submit} className="mt-8 space-y-6 rounded-2xl border border-border bg-white p-6 shadow-md">
           <Field label="Trip name">
-            <input required className="w-full rounded-lg border border-border bg-card px-3 py-2 text-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/15"
+            <input required className="input-field w-full px-3 py-2 text-sm"
               value={tripName} onChange={(e) => setTripName(e.target.value)} placeholder="Barcelona Weekend" />
           </Field>
           <Field label="Destination">
@@ -139,10 +139,10 @@ function CreatePage() {
           </Field>
           <div className="grid grid-cols-2 gap-4">
             <Field label="Start date">
-              <input required type="date" value={start} onChange={(e) => setStart(e.target.value)} className="w-full rounded-lg border border-border bg-card px-3 py-2 text-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/15" />
+              <input required type="date" value={start} onChange={(e) => setStart(e.target.value)} className="input-field w-full px-3 py-2 text-sm" />
             </Field>
             <Field label="End date">
-              <input required type="date" value={end} onChange={(e) => setEnd(e.target.value)} className="w-full rounded-lg border border-border bg-card px-3 py-2 text-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/15" />
+              <input required type="date" value={end} onChange={(e) => setEnd(e.target.value)} className="input-field w-full px-3 py-2 text-sm" />
             </Field>
           </div>
           <Field label="Trip vibe (pick at least one)">
@@ -152,7 +152,7 @@ function CreatePage() {
                 return (
                   <button type="button" key={v}
                     onClick={() => setVibe((x) => on ? x.filter((y) => y !== v) : [...x, v])}
-                    className={`rounded-md border px-3 py-1.5 text-sm transition ${on ? "border-primary bg-primary-light text-primary" : "border-border bg-card text-foreground hover:border-primary/30"}`}>
+                    className={`rounded-full border px-3 py-1.5 text-sm font-medium transition ${on ? "border-primary bg-primary-light text-primary" : "border-border bg-card text-foreground hover:border-primary/40 hover:bg-primary-light/50"}`}>
                     {v}
                   </button>
                 );
@@ -165,14 +165,14 @@ function CreatePage() {
                 const on = budget === b.value;
                 return (
                   <button type="button" key={b.value} onClick={() => setBudget(b.value)}
-                    className={`rounded-md border px-3 py-1.5 text-sm transition ${on ? "border-primary bg-primary-light text-primary" : "border-border bg-card text-foreground hover:border-primary/30"}`}>
+                    className={`rounded-full border px-3 py-1.5 text-sm font-medium transition ${on ? "border-primary bg-primary-light text-primary" : "border-border bg-card text-foreground hover:border-primary/40 hover:bg-primary-light/50"}`}>
                     {b.label}
                   </button>
                 );
               })}
             </div>
           </Field>
-          <button disabled={busy} className="flex w-full items-center justify-center gap-2 rounded-lg bg-primary px-4 py-3 text-sm font-semibold text-primary-foreground shadow-sm ring-2 ring-accent/40 hover:bg-primary-hover disabled:opacity-50">
+          <button disabled={busy} className="btn-primary flex w-full items-center justify-center gap-2 px-4 py-3 text-sm">
             {busy ? <Loader2 className="h-4 w-4 animate-spin" /> : <Sparkles className="h-4 w-4" strokeWidth={2.5} />}
             Create Trip & Get Invite Link
           </button>

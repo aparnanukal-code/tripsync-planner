@@ -40,26 +40,29 @@
 }
 
 :root {
-  --radius: 0.625rem;
+  --radius: 0.75rem;
 
-  /* Page surfaces */
-  --background: oklch(0.985 0.002 247);     /* gray-50 #F9FAFB */
+  /* Page surfaces — warm off-white #FFF8F0 */
+  --background: oklch(0.988 0.012 60);      /* warm off-white #FFF8F0 */
   --foreground: oklch(0.16 0.018 264);      /* gray-950 #030712 */
-  --card: oklch(1 0 0);                     /* white */
+  --card: oklch(1 0 0);                     /* pure white #FFFFFF */
   --card-foreground: oklch(0.16 0.018 264);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.16 0.018 264);
 
-  /* Brand — Indigo 600 #4F46E5 */
-  --primary: oklch(0.514 0.225 281.8);
+  /* Brand — Purple #7C3AED */
+  --primary: oklch(0.527 0.254 293);        /* #7C3AED */
   --primary-foreground: oklch(1 0 0);
-  --primary-hover: oklch(0.466 0.219 283);  /* indigo-700 #4338CA */
-  --primary-light: oklch(0.965 0.018 281);  /* indigo-50 #EEF2FF */
+  --primary-hover: oklch(0.487 0.248 294);  /* #6D28D9 */
+  --primary-light: oklch(0.963 0.028 293);  /* soft purple tint */
 
-  /* Accent — Amber 500 #F59E0B */
-  --accent: oklch(0.769 0.165 70);
+  /* Accent warm — Coral/Orange #F97316 */
+  --accent: oklch(0.706 0.191 47);          /* #F97316 */
   --accent-foreground: oklch(0.16 0.018 264);
-  --accent-light: oklch(0.984 0.04 95);     /* amber-50 #FFFBEB */
+  --accent-light: oklch(0.984 0.04 60);     /* warm orange-50 */
+
+  /* Accent cool — Teal/Mint #14B8A6 */
+  --teal: oklch(0.694 0.128 186);           /* #14B8A6 */
 
   /* Neutrals */
   --secondary: oklch(0.968 0.007 247);      /* gray-100 */
@@ -70,9 +73,9 @@
   --destructive: oklch(0.637 0.237 25);
   --destructive-foreground: oklch(1 0 0);
 
-  --border: oklch(0.929 0.013 255);         /* gray-200 #E5E7EB */
-  --input: oklch(0.929 0.013 255);
-  --ring: oklch(0.514 0.225 281.8);
+  --border: oklch(0.918 0.008 255);         /* #E2E8F0 */
+  --input: oklch(0.918 0.008 255);
+  --ring: oklch(0.527 0.254 293);           /* purple ring */
 
   /* Harmony semantics */
   --success: oklch(0.692 0.17 152);         /* green-500 */
@@ -86,4 +89,43 @@
   }
   * { border-color: var(--color-border); }
   body { background-color: var(--color-background); color: var(--color-foreground); }
+}
+
+@layer utilities {
+  .btn-primary {
+    background: linear-gradient(135deg, #7C3AED 0%, #6D28D9 100%);
+    color: #fff;
+    font-weight: 700;
+    border-radius: 9999px;
+    box-shadow: 0 4px 14px 0 rgba(124, 58, 237, 0.35);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+  .btn-primary:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px 0 rgba(124, 58, 237, 0.45);
+  }
+  .btn-primary:disabled {
+    opacity: 0.5;
+  }
+  .btn-outline-purple {
+    border: 1.5px solid #7C3AED;
+    color: #7C3AED;
+    background: transparent;
+    border-radius: 9999px;
+    font-weight: 600;
+    transition: background 0.15s ease, color 0.15s ease;
+  }
+  .btn-outline-purple:hover:not(:disabled) {
+    background: rgba(124, 58, 237, 0.08);
+  }
+  .input-field {
+    border-radius: 0.625rem;
+    border: 1.5px solid #E2E8F0;
+    background: #fff;
+  }
+  .input-field:focus {
+    outline: none;
+    border-color: #7C3AED;
+    box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.15);
+  }
 }

@@ -14,8 +14,8 @@ export function SiteHeader({ right }: { right?: React.ReactNode }) {
         <nav className="flex items-center gap-2">
           {right ?? (
             <>
-              <Link to="/create" className="rounded-lg px-3 py-1.5 text-sm font-medium text-muted-foreground hover:text-foreground">Sign in</Link>
-              <Link to="/create" className="rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground shadow-sm hover:bg-primary-hover">Create Trip</Link>
+              <Link to="/create" className="btn-outline-purple px-4 py-1.5 text-sm">Sign in</Link>
+              <Link to="/create" className="btn-primary px-5 py-2 text-sm">Create Trip</Link>
             </>
           )}
         </nav>

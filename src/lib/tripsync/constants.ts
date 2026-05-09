@@ -19,7 +19,7 @@ export const CATEGORIES = [
 export const CATEGORY_EMOJI: Record<string,string> = Object.fromEntries(CATEGORIES.map(c => [c.value, c.emoji]));
 
 export const AVATAR_COLORS = [
-  "bg-indigo-500","bg-amber-500","bg-green-500","bg-purple-500","bg-pink-500","bg-teal-500"
+  "bg-[#7C3AED]","bg-[#F97316]","bg-[#14B8A6]","bg-amber-500","bg-[#7C3AED]","bg-[#F97316]"
 ];
 
 export const colorForUser = (id: string | null | undefined, idx?: number) => {

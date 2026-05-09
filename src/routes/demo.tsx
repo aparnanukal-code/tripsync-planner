@@ -16,7 +16,7 @@ function Demo() {
     <div className="min-h-screen bg-background">
       <SiteHeader />
       <main className="mx-auto max-w-5xl px-6 py-10">
-        <div className="rounded-2xl border border-border bg-card p-6 shadow-sm">
+        <div className="rounded-2xl border border-border bg-white p-6 shadow-md">
           <p className="text-xs font-semibold uppercase tracking-wider text-primary">Live demo</p>
           <h1 className="mt-1 text-2xl font-bold tracking-tight">Barcelona Weekend</h1>
           <p className="text-sm text-muted-foreground">Barcelona, Spain · Sept 12 → 15 · Food + Nightlife</p>

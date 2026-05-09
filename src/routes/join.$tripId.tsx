@@ -2,7 +2,7 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { SiteHeader } from "@/components/tripsync/Header";
-import { Loader2, Users, MapPin, Calendar } from "lucide-react";
+import { Loader as Loader2, Users, MapPin, Calendar } from "lucide-react";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/join/$tripId")({
@@ -12,6 +12,9 @@ export const Route = createFileRoute("/join/$tripId")({
     { name: "description", content: "Join your group's trip with just a nickname." },
   ]}),
 });
+
+const EDGE_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/join-trip`;
+const ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY || import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY;
 
 function JoinPage() {
   const { tripId } = Route.useParams();
@@ -24,17 +27,18 @@ function JoinPage() {
 
   useEffect(() => {
     (async () => {
-      const { data: sess } = await supabase.auth.getSession();
-      if (!sess.session) {
-        await supabase.auth.signInAnonymously({
-          options: { data: { display_name: "Traveler", is_anonymous: true } },
+      try {
+        const res = await fetch(`${EDGE_URL}?tripId=${tripId}`, {
+          headers: { Authorization: `Bearer ${ANON_KEY}` },
         });
+        const data = await res.json();
+        setTrip(data.trip ?? null);
+        setCount(data.memberCount ?? 0);
+      } catch {
+        setTrip(null);
+      } finally {
+        setLoading(false);
       }
-      const { data: t } = await supabase.from("trips").select("*").eq("id", tripId).maybeSingle();
-      setTrip(t);
-      const { count: c } = await supabase.from("members").select("*", { count: "exact", head: true }).eq("trip_id", tripId);
-      setCount(c ?? 0);
-      setLoading(false);
     })();
   }, [tripId]);
 
@@ -46,24 +50,27 @@ function JoinPage() {
     }
     setBusy(true);
     try {
-      const { data: existing } = await supabase.auth.getSession();
-      let userId = existing.session?.user?.id;
-      if (!userId) {
-        const { data, error } = await supabase.auth.signInAnonymously({
-          options: { data: { display_name: nickname, is_anonymous: true } },
-        });
-        if (error) throw error;
-        userId = data.user!.id;
-        // Update profile name in case trigger used default
-        await supabase.from("profiles").update({ display_name: nickname, is_anonymous: true }).eq("id", userId);
-      } else {
-        await supabase.from("profiles").update({ display_name: nickname }).eq("id", userId);
-      }
-      await supabase.from("members").insert({ trip_id: tripId, user_id: userId! }).then(() => {});
+      const res = await fetch(EDGE_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${ANON_KEY}` },
+        body: JSON.stringify({ tripId, nickname }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error ?? "Could not join");
+
+      // Sign in with the generated credentials so the user has a real session
+      const { error: signInErr } = await supabase.auth.signInWithPassword({
+        email: data.email,
+        password: data.password,
+      });
+      if (signInErr) throw signInErr;
+
       navigate({ to: "/trip/$tripId", params: { tripId } });
     } catch (err: any) {
       toast.error(err.message ?? "Could not join");
-    } finally { setBusy(false); }
+    } finally {
+      setBusy(false);
+    }
   };
 
   if (loading) return <div className="grid min-h-screen place-items-center bg-background"><Loader2 className="h-6 w-6 animate-spin text-primary" /></div>;
@@ -81,7 +88,7 @@ function JoinPage() {
     <div className="min-h-screen bg-background">
       <SiteHeader right={<span className="text-sm text-muted-foreground">Guest join</span>} />
       <main className="mx-auto max-w-md px-6 py-12">
-        <div className="rounded-2xl border border-border bg-card p-6 shadow-sm">
+        <div className="rounded-2xl border border-border bg-white p-6 shadow-md">
           <p className="text-xs font-medium uppercase tracking-wider text-primary">You're invited</p>
           <h1 className="mt-1 text-2xl font-bold tracking-tight">{trip.trip_name}</h1>
           <ul className="mt-4 space-y-2 text-sm text-muted-foreground">
@@ -96,9 +103,9 @@ function JoinPage() {
             onChange={(e) => setNickname(e.target.value)}
             maxLength={30}
             placeholder="Your nickname (e.g. Alex)"
-            className="w-full rounded-lg border border-border bg-card px-3 py-2 text-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/15"
+            className="input-field w-full px-3 py-2 text-sm"
           />
-          <button disabled={busy} className="flex w-full items-center justify-center gap-2 rounded-lg bg-primary px-4 py-3 text-sm font-semibold text-primary-foreground shadow-sm hover:bg-primary-hover disabled:opacity-50">
+          <button disabled={busy} className="btn-primary flex w-full items-center justify-center gap-2 px-4 py-3 text-sm">
             {busy && <Loader2 className="h-4 w-4 animate-spin" />}
             Join Trip →
           </button>

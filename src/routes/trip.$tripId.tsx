@@ -5,9 +5,11 @@ import { SiteHeader } from "@/components/tripsync/Header";
 import { ActivityCard, MemberAvatar, type Activity, type Vote } from "@/components/tripsync/ActivityCard";
 import { AddActivityForm } from "@/components/tripsync/AddActivityForm";
 import { ItineraryPanel } from "@/components/tripsync/HarmonyAndItinerary";
+import { NotesPanel } from "@/components/tripsync/NotesPanel";
 import { BARCELONA_FALLBACK, type Itinerary } from "@/lib/tripsync/constants";
 import { Link2, Loader2, Sparkles, Users } from "lucide-react";
 import { toast } from "sonner";
+import tripBanner from "@/assets/trip-banner.jpg";
 
 export const Route = createFileRoute("/trip/$tripId")({
   component: BoardPage,
@@ -53,13 +55,23 @@ function BoardPage() {
       const [{ data: t }, { data: a }, { data: m }, { data: it }] = await Promise.all([
         supabase.from("trips").select("*").eq("id", tripId).maybeSingle(),
         supabase.from("activities").select("*").eq("trip_id", tripId).order("created_at"),
-        supabase.from("members").select("user_id, profiles(display_name)").eq("trip_id", tripId),
+        supabase.from("members").select("user_id").eq("trip_id", tripId),
         supabase.from("itineraries").select("*").eq("trip_id", tripId).maybeSingle(),
       ]);
       setTrip(t);
       setActivities((a ?? []) as Activity[]);
       (a ?? []).forEach((x: any) => seenAct.current.add(x.id));
-      setMembers((m ?? []).map((x: any) => ({ user_id: x.user_id, display_name: x.profiles?.display_name ?? "Member" })));
+      const memberIds = (m ?? []).map((x: any) => x.user_id);
+      if (memberIds.length) {
+        const { data: profs } = await supabase
+          .from("profiles")
+          .select("id, display_name")
+          .in("id", memberIds);
+        const nameById = Object.fromEntries((profs ?? []).map((p: any) => [p.id, p.display_name]));
+        setMembers(memberIds.map((id: string) => ({ user_id: id, display_name: nameById[id] ?? "Traveler" })));
+      } else {
+        setMembers([]);
+      }
       if (it) setItinerary(it.generated_plan as Itinerary);
       const actIds = (a ?? []).map((x: any) => x.id);
       if (actIds.length) {

@@ -194,15 +194,24 @@ function BoardPage() {
       } />
 
       <div className="border-b border-border bg-card">
-        <div className="mx-auto flex max-w-7xl flex-wrap items-center gap-4 px-6 py-4">
-          <div>
-            <h1 className="text-xl font-bold tracking-tight">{trip.trip_name}</h1>
-            <p className="text-xs text-muted-foreground">{trip.destination} · {trip.start_date} → {trip.end_date}</p>
-          </div>
-          <StatusBadge status={trip.status} />
-          <div className="ml-auto flex -space-x-1.5">
-            {members.slice(0,8).map((m, i) => <MemberAvatar key={m.user_id} name={m.display_name} idx={i} />)}
-            {members.length > 8 && <span className="grid h-8 w-8 place-items-center rounded-full bg-muted text-xs font-bold ring-2 ring-card">+{members.length - 8}</span>}
+        <div
+          className="relative overflow-hidden"
+          style={{
+            backgroundImage: `linear-gradient(180deg, color-mix(in oklab, var(--card) 70%, transparent), var(--card)), url(${tripBanner})`,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+          }}
+        >
+          <div className="mx-auto flex max-w-7xl flex-wrap items-center gap-4 px-6 py-6">
+            <div>
+              <h1 className="text-xl font-bold tracking-tight">{trip.trip_name}</h1>
+              <p className="text-xs text-muted-foreground">{trip.destination} · {trip.start_date} → {trip.end_date}</p>
+            </div>
+            <StatusBadge status={trip.status} />
+            <div className="ml-auto flex -space-x-1.5">
+              {members.slice(0,8).map((m, i) => <MemberAvatar key={m.user_id} name={m.display_name} idx={i} />)}
+              {members.length > 8 && <span className="grid h-8 w-8 place-items-center rounded-full bg-muted text-xs font-bold ring-2 ring-card">+{members.length - 8}</span>}
+            </div>
           </div>
         </div>
       </div>
@@ -265,7 +274,7 @@ function BoardPage() {
         </section>
 
         {/* Right */}
-        <aside className="lg:sticky lg:top-24 lg:self-start">
+        <aside className="space-y-4 lg:sticky lg:top-24 lg:self-start">
           <ItineraryPanel
             itinerary={itinerary}
             status={trip.status}
@@ -275,6 +284,12 @@ function BoardPage() {
             onGenerate={() => generate(false)}
             onRegenerate={() => generate(true)}
             onFinalize={finalize}
+          />
+          <NotesPanel
+            tripId={tripId}
+            currentUserId={user?.id ?? null}
+            memberMap={memberMap}
+            locked={locked}
           />
         </aside>
       </main>

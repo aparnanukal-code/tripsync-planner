@@ -44,12 +44,12 @@ function Landing() {
               ✈️ Group travel, finally simple
             </span>
             <h1 className="mt-5 text-5xl font-extrabold tracking-tight text-foreground sm:text-6xl">
-              Plan trips together.
+              The trip that made
               <br />
-              <span className="text-primary">No chaos. Just good vibes.</span>
+              <span className="text-primary">out of the chat.</span>
             </h1>
             <p className="mx-auto mt-6 max-w-2xl text-lg text-muted-foreground sm:text-xl">
-              Join with a nickname. Vote in seconds. AI builds a fair itinerary for the whole group.
+              Plan trips together. No chaos. Just good vibes.
             </p>
             <div className="mt-10 flex flex-wrap justify-center gap-3">
               <Link

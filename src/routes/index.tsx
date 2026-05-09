@@ -40,7 +40,7 @@ function Landing() {
         <div className="absolute inset-0 -z-10 bg-gradient-to-b from-background/70 via-background/85 to-background" />
         <div className="mx-auto max-w-7xl px-6 py-24 sm:py-28">
           <div className="text-center">
-            <span className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary-light px-3 py-1 text-xs font-semibold text-primary">
+            <span className="inline-flex items-center gap-2 rounded-full border border-primary/40 bg-primary-light px-5 py-2 text-sm font-semibold text-primary-hover shadow-[0_0_24px_-4px_var(--primary)] ring-1 ring-primary/20">
               ✈️ Group travel, finally simple
             </span>
             <h1 className="mt-5 text-5xl font-extrabold tracking-tight text-foreground sm:text-6xl">

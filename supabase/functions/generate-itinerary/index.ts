@@ -31,8 +31,14 @@ Deno.serve(async (req) => {
       return new Response(JSON.stringify({ error: "Need at least 3 voted activities" }), { status: 400, headers: { ...cors, "Content-Type": "application/json" } });
     }
 
-    const { data: members } = await admin.from("members").select("user_id, profiles(display_name)").eq("trip_id", tripId);
-    const memberMap: Record<string,string> = Object.fromEntries((members ?? []).map((m: any) => [m.user_id, m.profiles?.display_name ?? "Member"]));
+    const { data: members } = await admin.from("members").select("user_id").eq("trip_id", tripId);
+    const memberIds = (members ?? []).map((m: any) => m.user_id);
+    const { data: profiles } = memberIds.length
+      ? await admin.from("profiles").select("id, display_name").in("id", memberIds)
+      : { data: [] as any[] };
+    const memberMap: Record<string,string> = Object.fromEntries(
+      memberIds.map((id: string) => [id, (profiles ?? []).find((p: any) => p.id === id)?.display_name ?? "Traveler"])
+    );
 
     const voteEmoji: Record<string,string> = { must_do: "❤️", interested: "🤔", skip: "😐" };
     const activitiesText = (activities ?? []).map((a: any) => {

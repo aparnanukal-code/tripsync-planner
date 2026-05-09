@@ -24,10 +24,10 @@ function Landing() {
             Join with a nickname. Vote in seconds. AI does the rest.
           </p>
           <div className="mt-10 flex flex-wrap justify-center gap-3">
-            <Link to="/create" className="rounded-lg bg-primary px-6 py-3 text-base font-semibold text-primary-foreground shadow-sm hover:bg-primary-hover">
+            <Link to="/create" className="btn-primary px-8 py-3 text-base">
               Create Trip →
             </Link>
-            <Link to="/demo" className="rounded-lg border border-border bg-card px-6 py-3 text-base font-semibold text-foreground hover:bg-muted">
+            <Link to="/demo" className="btn-outline-purple px-8 py-3 text-base">
               ▶ Try Demo
             </Link>
           </div>
@@ -39,7 +39,7 @@ function Landing() {
             { icon: Vote, emoji: "🗳️", title: "Vote + Add", desc: "React with ❤️ 🤔 😐 to AI suggestions, or pitch your own ideas to the group." },
             { icon: Target, emoji: "🎯", title: "Fair by AI", desc: "One click builds a balanced plan everyone can get behind — with a Harmony Score." },
           ].map((f) => (
-            <div key={f.title} className="rounded-2xl border border-border bg-card p-6 shadow-sm transition-all hover:border-primary/40 hover:shadow-md">
+            <div key={f.title} className="rounded-2xl border border-border bg-white p-6 shadow-md transition-all hover:border-primary/40 hover:shadow-lg">
               <div className="text-3xl">{f.emoji}</div>
               <h3 className="mt-3 text-lg font-semibold">{f.title}</h3>
               <p className="mt-2 text-sm text-muted-foreground">{f.desc}</p>

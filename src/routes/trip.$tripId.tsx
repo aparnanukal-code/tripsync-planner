@@ -6,7 +6,7 @@ import { ActivityCard, MemberAvatar, type Activity, type Vote } from "@/componen
 import { AddActivityForm } from "@/components/tripsync/AddActivityForm";
 import { ItineraryPanel } from "@/components/tripsync/HarmonyAndItinerary";
 import { BARCELONA_FALLBACK, type Itinerary } from "@/lib/tripsync/constants";
-import { Link2, Loader2, Sparkles, Users } from "lucide-react";
+import { Link2, Loader as Loader2, Sparkles, Users } from "lucide-react";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/trip/$tripId")({
@@ -176,12 +176,12 @@ function BoardPage() {
   return (
     <div className="min-h-screen bg-background">
       <SiteHeader right={
-        <button onClick={copyInvite} className="flex items-center gap-1.5 rounded-lg border border-border bg-card px-3 py-1.5 text-sm font-medium hover:bg-muted">
+        <button onClick={copyInvite} className="btn-outline-purple flex items-center gap-1.5 px-4 py-1.5 text-sm">
           <Link2 className="h-4 w-4" /> Invite
         </button>
       } />
 
-      <div className="border-b border-border bg-card">
+      <div className="border-b border-border bg-white">
         <div className="mx-auto flex max-w-7xl flex-wrap items-center gap-4 px-6 py-4">
           <div>
             <h1 className="text-xl font-bold tracking-tight">{trip.trip_name}</h1>
@@ -198,7 +198,7 @@ function BoardPage() {
       <main className="mx-auto grid max-w-7xl gap-6 px-6 py-6 lg:grid-cols-[240px_1fr_360px]">
         {/* Left */}
         <aside className="space-y-4 lg:sticky lg:top-24 lg:self-start">
-          <div className="rounded-2xl border border-border bg-card p-4 shadow-sm">
+          <div className="rounded-2xl border border-border bg-white p-4 shadow-md">
             <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Trip details</h3>
             <p className="mt-2 text-sm font-semibold">{trip.destination_city}</p>
             <p className="text-xs text-muted-foreground">{trip.start_date} → {trip.end_date}</p>
@@ -207,7 +207,7 @@ function BoardPage() {
             </div>
             <p className="mt-2 text-[11px] text-muted-foreground">Budget: {trip.budget_category}</p>
           </div>
-          <div className="rounded-2xl border border-border bg-card p-4 shadow-sm">
+          <div className="rounded-2xl border border-border bg-white p-4 shadow-md">
             <div className="flex items-center gap-2"><Users className="h-4 w-4 text-muted-foreground" /><h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Members ({members.length})</h3></div>
             <ul className="mt-3 space-y-2">
               {members.map((m, i) => (
@@ -229,7 +229,7 @@ function BoardPage() {
               <span className="text-xs text-muted-foreground">({aiActivities.length})</span>
             </div>
             {aiActivities.length === 0 ? (
-              <p className="rounded-xl border border-dashed border-border bg-card p-6 text-center text-sm text-muted-foreground">Loading AI suggestions…</p>
+              <p className="rounded-xl border border-dashed border-border bg-white p-6 text-center text-sm text-muted-foreground">Loading AI suggestions…</p>
             ) : (
               <div className="grid gap-3 sm:grid-cols-2">
                 {aiActivities.map((a) => (
@@ -268,7 +268,7 @@ function BoardPage() {
       </main>
 
       {locked && !bannerDismissed && (
-        <div className="fixed inset-x-0 bottom-0 z-30 border-t border-border bg-card/95 backdrop-blur">
+        <div className="fixed inset-x-0 bottom-0 z-30 border-t border-border bg-white/95 backdrop-blur">
           <div className="mx-auto flex max-w-7xl flex-wrap items-center gap-4 px-6 py-3">
             <p className="text-sm">🎉 This trip is finalized! Want to plan future trips? <a href="/create" className="font-semibold text-primary hover:underline">Create a free account — takes 10 seconds.</a></p>
             <button onClick={() => setBannerDismissed(true)} className="ml-auto text-sm text-muted-foreground hover:text-foreground">Dismiss</button>

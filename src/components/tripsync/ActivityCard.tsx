@@ -39,14 +39,14 @@ export function ActivityCard({
     ? "bg-red-50 border-red-200"
     : myVote
     ? "bg-primary-light border-primary/30"
-    : "bg-card border-border hover:border-primary/30 hover:shadow-md";
+    : "bg-white border-border hover:border-primary/40 hover:shadow-lg";
 
   return (
     <motion.div
       layout
       initial={{ opacity: 0, y: -8 }}
       animate={{ opacity: 1, y: 0 }}
-      className={`relative rounded-xl border p-4 shadow-sm transition-all duration-150 ${cardClass}`}
+      className={`relative rounded-2xl border p-4 shadow-md transition-all duration-150 ${cardClass}`}
     >
       {myVote && (
         <span className={`absolute left-0 top-3 h-[calc(100%-1.5rem)] w-[3px] rounded-r ${myVote === "must_do" ? "bg-danger/70" : "bg-primary/70"}`} />

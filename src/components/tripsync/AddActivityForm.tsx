@@ -16,7 +16,7 @@ export function AddActivityForm({ onAdd, disabled }: { onAdd: (a: { title: strin
     <div>
       {!open && (
         <button onClick={() => setOpen(true)}
-          className="flex w-full items-center justify-center gap-2 rounded-xl border-2 border-dashed border-primary/40 bg-card px-4 py-3 text-sm font-medium text-primary transition hover:border-primary hover:bg-primary-light">
+          className="flex w-full items-center justify-center gap-2 rounded-2xl border-2 border-dashed border-primary/40 bg-white px-4 py-3 text-sm font-medium text-primary transition hover:border-primary hover:bg-primary-light">
           <Plus className="h-4 w-4" strokeWidth={2.5} /> Add Mine
         </button>
       )}
@@ -31,14 +31,14 @@ export function AddActivityForm({ onAdd, disabled }: { onAdd: (a: { title: strin
                 try { await onAdd({ title: title.trim(), description: desc.trim(), category: cat }); setOpen(false); setTitle(""); setDesc(""); }
                 finally { setBusy(false); }
               }}
-              className="space-y-3 rounded-xl border border-border bg-card p-4"
+              className="space-y-3 rounded-2xl border border-border bg-white p-4 shadow-md"
             >
               <div className="flex items-center justify-between">
                 <h4 className="text-sm font-semibold">Add an activity</h4>
                 <button type="button" onClick={() => setOpen(false)} className="text-muted-foreground hover:text-foreground"><X className="h-4 w-4" /></button>
               </div>
-              <input maxLength={60} required value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Activity name" className="w-full rounded-lg border border-border bg-card px-3 py-2 text-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/15" />
-              <input maxLength={100} value={desc} onChange={(e) => setDesc(e.target.value)} placeholder="Notes (optional)" className="w-full rounded-lg border border-border bg-card px-3 py-2 text-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/15" />
+              <input maxLength={60} required value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Activity name" className="input-field w-full px-3 py-2 text-sm" />
+              <input maxLength={100} value={desc} onChange={(e) => setDesc(e.target.value)} placeholder="Notes (optional)" className="input-field w-full px-3 py-2 text-sm" />
               <div className="flex flex-wrap gap-1.5">
                 {CATEGORIES.map((c) => (
                   <button type="button" key={c.value} onClick={() => setCat(c.value)}
@@ -47,7 +47,7 @@ export function AddActivityForm({ onAdd, disabled }: { onAdd: (a: { title: strin
                   </button>
                 ))}
               </div>
-              <button disabled={busy} className="w-full rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground shadow-sm hover:bg-primary-hover disabled:opacity-50">
+              <button disabled={busy} className="btn-primary w-full px-4 py-2 text-sm">
                 Add to board
               </button>
             </form>

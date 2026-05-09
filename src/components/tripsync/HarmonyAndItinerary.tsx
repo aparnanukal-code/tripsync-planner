@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import type { Itinerary } from "@/lib/tripsync/constants";
-import { Sparkles, RefreshCw, CheckCircle2, Target, Loader2 } from "lucide-react";
+import { Sparkles, RefreshCw, CircleCheck as CheckCircle2, Target, Loader as Loader2 } from "lucide-react";
 
 const tone = (s: number) => s >= 80 ? { bar: "bg-green-500", text: "text-green-600" } : s >= 60 ? { bar: "bg-amber-500", text: "text-amber-600" } : { bar: "bg-red-500", text: "text-red-600" };
 
@@ -38,7 +38,7 @@ export function ItineraryPanel({
 }) {
   if (!itinerary) {
     return (
-      <div className="flex h-full flex-col items-center justify-center rounded-2xl border border-dashed border-border bg-card p-8 text-center">
+      <div className="flex h-full flex-col items-center justify-center rounded-2xl border border-dashed border-border bg-white p-8 text-center shadow-md">
         {generating ? (
           <>
             <Loader2 className="h-8 w-8 animate-spin text-primary" />
@@ -53,7 +53,7 @@ export function ItineraryPanel({
               disabled={!canGenerate || generating}
               onClick={onGenerate}
               title={!canGenerate ? "Vote on at least 3 activities first" : ""}
-              className="mt-5 flex items-center justify-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground shadow-sm ring-2 ring-accent/40 hover:bg-primary-hover disabled:cursor-not-allowed disabled:opacity-50"
+              className="btn-primary mt-5 flex items-center justify-center gap-2 px-5 py-2.5 text-sm disabled:cursor-not-allowed"
             >
               <Sparkles className="h-4 w-4" /> Generate Itinerary
             </button>
@@ -66,7 +66,7 @@ export function ItineraryPanel({
   const t = tone(itinerary.harmony_score);
   return (
     <div className="space-y-4">
-      <div className="rounded-2xl border border-border bg-card p-5 shadow-sm">
+      <div className="rounded-2xl border border-border bg-white p-5 shadow-md">
         <div className="flex items-center gap-2">
           <Target className="h-5 w-5 text-primary" />
           <h3 className="text-base font-semibold">Group Harmony</h3>
@@ -82,7 +82,7 @@ export function ItineraryPanel({
 
       <div className="space-y-3">
         {itinerary.days.map((day) => (
-          <div key={day.day} className="rounded-2xl border border-border bg-card p-4 shadow-sm">
+          <div key={day.day} className="rounded-2xl border border-border bg-white p-4 shadow-md">
             <div className="mb-3 flex items-baseline gap-2">
               <h4 className="text-sm font-bold uppercase tracking-wide text-primary">Day {day.day}</h4>
               <span className="text-xs text-muted-foreground">{day.date}</span>
@@ -110,10 +110,10 @@ export function ItineraryPanel({
         <div className="flex gap-2">
           {isOrganizer && (
             <>
-              <button onClick={onRegenerate} disabled={generating} className="flex flex-1 items-center justify-center gap-1.5 rounded-lg border border-border bg-card px-3 py-2 text-sm font-medium hover:bg-muted disabled:opacity-50">
+              <button onClick={onRegenerate} disabled={generating} className="btn-outline-purple flex flex-1 items-center justify-center gap-1.5 px-3 py-2 text-sm disabled:opacity-50">
                 <RefreshCw className={`h-4 w-4 ${generating ? "animate-spin" : ""}`} /> Regenerate
               </button>
-              <button onClick={onFinalize} className="flex flex-1 items-center justify-center gap-1.5 rounded-lg bg-primary px-3 py-2 text-sm font-medium text-primary-foreground shadow-sm hover:bg-primary-hover">
+              <button onClick={onFinalize} className="btn-primary flex flex-1 items-center justify-center gap-1.5 px-3 py-2 text-sm">
                 <CheckCircle2 className="h-4 w-4" /> Finalize Trip
               </button>
             </>

@@ -284,6 +284,7 @@ function BoardPage() {
             onGenerate={() => generate(false)}
             onRegenerate={() => generate(true)}
             onFinalize={finalize}
+            tripName={trip.trip_name}
           />
           <NotesPanel
             tripId={tripId}

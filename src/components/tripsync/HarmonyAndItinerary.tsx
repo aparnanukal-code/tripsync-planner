@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import type { Itinerary } from "@/lib/tripsync/constants";
-import { Sparkles, RefreshCw, CheckCircle2, Target, Loader2 } from "lucide-react";
+import { Sparkles, RefreshCw, CheckCircle2, Target, Loader2, Download, Share2 } from "lucide-react";
+import { toast } from "sonner";
 
 const tone = (s: number) => s >= 80 ? { bar: "bg-green-500", text: "text-green-600" } : s >= 60 ? { bar: "bg-amber-500", text: "text-amber-600" } : { bar: "bg-red-500", text: "text-red-600" };
 
@@ -25,7 +26,7 @@ export function HarmonyBars({ breakdown }: { breakdown: Itinerary["harmony_break
 }
 
 export function ItineraryPanel({
-  itinerary, status, isOrganizer, generating, canGenerate, onGenerate, onRegenerate, onFinalize,
+  itinerary, status, isOrganizer, generating, canGenerate, onGenerate, onRegenerate, onFinalize, tripName,
 }: {
   itinerary: Itinerary | null;
   status: string;
@@ -35,6 +36,7 @@ export function ItineraryPanel({
   onGenerate: () => void;
   onRegenerate: () => void;
   onFinalize: () => void;
+  tripName?: string;
 }) {
   if (!itinerary) {
     return (
@@ -64,6 +66,54 @@ export function ItineraryPanel({
   }
 
   const t = tone(itinerary.harmony_score);
+
+  const buildText = () => {
+    const lines: string[] = [];
+    lines.push(`${tripName || "Trip"} — Itinerary`);
+    lines.push(`Group Harmony: ${itinerary.harmony_score}%`);
+    if (itinerary.optimization_summary) lines.push(itinerary.optimization_summary);
+    lines.push("");
+    itinerary.days.forEach((day) => {
+      lines.push(`Day ${day.day} — ${day.date}`);
+      day.activities.forEach((a) => {
+        lines.push(`  ${a.time}  ${a.title} (${a.duration} · ${a.cost_estimate} · ${a.category})`);
+        if (a.reason) lines.push(`         "${a.reason}"`);
+      });
+      lines.push("");
+    });
+    return lines.join("\n");
+  };
+
+  const handleDownload = () => {
+    const blob = new Blob([buildText()], { type: "text/plain;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `${(tripName || "trip").replace(/[^a-z0-9]+/gi, "-").toLowerCase()}-itinerary.txt`;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+    toast.success("Itinerary downloaded");
+  };
+
+  const handleShare = async () => {
+    const text = buildText();
+    const shareData = { title: `${tripName || "Trip"} Itinerary`, text, url: window.location.href };
+    try {
+      if (navigator.share && navigator.canShare?.(shareData)) {
+        await navigator.share(shareData);
+        return;
+      }
+    } catch {}
+    try {
+      await navigator.clipboard.writeText(`${text}\n\n${window.location.href}`);
+      toast.success("Itinerary copied to clipboard");
+    } catch {
+      toast.error("Could not share itinerary");
+    }
+  };
+
   return (
     <div className="space-y-4">
       <div className="rounded-2xl border border-border bg-card p-5 shadow-sm">
@@ -104,6 +154,15 @@ export function ItineraryPanel({
             </ul>
           </div>
         ))}
+      </div>
+
+      <div className="flex gap-2">
+        <button onClick={handleDownload} className="flex flex-1 items-center justify-center gap-1.5 rounded-lg border border-border bg-card px-3 py-2 text-sm font-medium hover:bg-muted">
+          <Download className="h-4 w-4" /> Download
+        </button>
+        <button onClick={handleShare} className="flex flex-1 items-center justify-center gap-1.5 rounded-lg border border-border bg-card px-3 py-2 text-sm font-medium hover:bg-muted">
+          <Share2 className="h-4 w-4" /> Share
+        </button>
       </div>
 
       {status !== "finalized" && (
